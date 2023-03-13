@@ -19,3 +19,51 @@
     the configuration developed.
     
     Providers use a plugin-based architecture that is available for most infrastructure platforms within the public Terraform registry.
+
+## Validation Block:
+   you can add a validation block inside the variable block Within this validation block,we can define a condition 
+   
+  variable "aws_private_subnet_ids" {
+  description = "VPC private subnet ids."
+  type        = list(string)
+
+  validation {
+    condition     = length(var.aws_private_subnet_ids) > 1
+    error_message = "This application requires at least two private subnets."
+  }
+}
+
+## Test3:
+   A variable name or a label must be unique within the same module or configuration.
+   The variable block begins with the "variable" keyword followed by a user defined name/label for the variable.
+   If both the “type” and the “default” argument are specified inside the variable block, the given default value must be convertible to the specified 
+      type. True or False?    true 
+   output values is displayed when you run #terraform apply    OR     #terraform outputs
+   
+   
+ ## Explicit Dependency:
+    Is used to make sure that specific resources are created before another in the configuration.
+    
+     depends_on = [
+       aws_instance.db
+     ]
+## Test4:
+   interpolation syntax: A way to reference a variables, attributes of resources and call functions.
+   What is the generic way to reference attributes within the terraform expression?
+       resource_type.name.attribute
+   Both resources and datasources export arguments as readable attributes.
+   When a module has multiple configurations for the same provider, which meta-argument can you use to specify the configuration?    providers
+   Choose the meta-argument which is not supported by the data block.      lifecycle
+   The behavior of __local-only____ data sources is the same as all other data sources, but their result data exists only temporarily during a Terraform
+       operation, and is re-calculated each time a new plan is created.
+
+
+
+
+
+
+
+
+
+
+
