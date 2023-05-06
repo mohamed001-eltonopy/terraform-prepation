@@ -1,6 +1,53 @@
 # terraform-prepation Exam
 
+______________________________________________________________________________________________________________
+## Nana Course
+______________________________________________________________________________________________________________
+
+What's Terraform?
+ automate and manage your Infrastructure, your platform , and services that run on that platform.
+ It's Open source and it's declrative language"= you don't have to define every step of how this automation and managment is done only you just define
+  the end result and Terraform will figure out how to execute it" 
+  
+Terraform Architecture? Has 2 Main components
+  1- Terraform Core :uses 2 input sources to figures out the Plan of what needs to be created/updated/destroyed(by comparing the current vs desired)state.
+      (a) TF-Config: that you define what you need to create or provisioning (desired state)
+      (b) Terraform State: where terraform keeps the up-to-date state of how the current setup of the infra looks like (current state)
+  2- Providers: where Terrform execute the Plan so it connects to AWS,AZURE,......to have access to their resources and creates what it needs
+       Ec2,IAM,VPC,.....
+ 
+ Terraform Commands:
+   terraform init: installs providers define in the terraform configuration
+   terraform refresh,state: qurey infra provider to get the current state
+   terraform plan: create an execution plan
+   terraform apply: execute the plan
+   terraform destroy: destroy the resources/infrastructure
+ 
+ Terraform Installiation:
+   brew install terraform 
+   terraform -v
+   brew upgrade terraform
+   
+ Connect to aws:
+   aws configure list 
+   
+ Note: 
+    Route tabkes : in aws is like virtual Routers that route and handle the traffic inside/outside your vpc/subnets.
+    User Data: is an entry point script that executed on ec2 when the server is initiated 
+    
+ Modules: to not make all of our configurations in one file but to make it modular so basically break up parts of our configurations into logical groups 
+          and packaging them together in folders and this folder called modules. So, the Container for multiple resources to create Module for EC2 
+          Instance , used together and packaging them to create it , and we can resue it multiple times 
+        - When you define a module you can pass parameter as you want through "Inputs" , and you can access the output/results of the modules by "Outputs"
+
+
+
+
+
+
+______________________________________________________________________________________________________________
 ## KodeKloud Course:
+______________________________________________________________________________________________________________
 
 ## Test1:
   **What is Immutable Infrastructure?**
