@@ -40,7 +40,22 @@ Terraform Architecture? Has 2 Main components
           Instance , used together and packaging them to create it , and we can resue it multiple times 
         - When you define a module you can pass parameter as you want through "Inputs" , and you can access the output/results of the modules by "Outputs"
 
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 
 
