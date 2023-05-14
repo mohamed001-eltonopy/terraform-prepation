@@ -18,8 +18,8 @@ Terraform Architecture? Has 2 Main components
  
  Terraform Commands:
    terraform init: installs providers define in the terraform configuration
-   terraform refresh,state: qurey infra provider to get the current state
-   terraform plan: create an execution plan
+   terraform refresh,state: fetches the current state of your infastructure.
+   terraform plan: make sure that the desired state == current state. 
    terraform apply: execute the plan
    terraform destroy: destroy the resources/infrastructure
  
@@ -32,7 +32,7 @@ Terraform Architecture? Has 2 Main components
    aws configure list 
    
  Note: 
-    Route tabkes : in aws is like virtual Routers that route and handle the traffic inside/outside your vpc/subnets.
+    Route tables : in aws is like virtual Routers that route and handle the traffic inside/outside your vpc/subnets.
     User Data: is an entry point script that executed on ec2 when the server is initiated 
     
  Modules: to not make all of our configurations in one file but to make it modular so basically break up parts of our configurations into logical groups 
