@@ -6,15 +6,16 @@ ________________________________________________________________________________
 
 What's Terraform?
  automate and manage your Infrastructure, your platform , and services that run on that platform.
- It's Open source and it's declrative language"= you don't have to define every step of how this automation and managment is done only you just define
-  the end result and Terraform will figure out how to execute it" 
+ It's Open source and it's declrative language"= you don't have to define every step of how this automation and managment is done only 
+      you just define the end result and Terraform will figure out how to execute it" 
   
 Terraform Architecture? Has 2 Main components
-  1- Terraform Core :uses 2 input sources to figures out the Plan of what needs to be created/updated/destroyed(by comparing the current vs desired)state.
+  1- Terraform Core :uses 2 input sources to figures out the Plan of what needs to be created/updated/destroyed
+      (by comparing the current vs desired)state.
       (a) TF-Config: that you define what you need to create or provisioning (desired state)
       (b) Terraform State: where terraform keeps the up-to-date state of how the current setup of the infra looks like (current state)
-  2- Providers: where Terrform execute the Plan so it connects to AWS,AZURE,......to have access to their resources and creates what it needs
-       Ec2,IAM,VPC,.....
+  2- Providers: where Terrform execute the Plan so it connects to AWS,AZURE,......to have access to their resources and creates what it
+         needs Ec2,IAM,VPC,.....
  
  Terraform Commands:
    terraform init: installs providers define in the terraform configuration
@@ -41,38 +42,39 @@ Terraform Architecture? Has 2 Main components
         - When you define a module you can pass parameter as you want through "Inputs" , and you can access the output/results of the modules by "Outputs"
         - Once you create a module you should install it when you run terraform config file #terraform init
 
- How EKS Cluster is created using Terraform ? 
-   1- we have controlplane"master node" that it managed by aws ....>> nothing you should to do
-   2- nce we have a master node we want to create "worker nodes" and connect these worker to master nodes to have a complete cluster and then deploy apps.
-   3- SO, you need to create a VPC Where the worker nodes will run That are "EC2 instances" you creat or using "node groups" that do some work for you 
-         like install all necessary things on ec2 instances.
-   4- You Always create a cluster in a specific region "ex: eu-west-3" that have multiple AZs which each of az has one worker node for High Availability
-         And each AZ have (public subnet + private Subnet that have inside it worker nodes), you have 1 RouteTable for a VPC with Internet Gateway to
-          connect to the Internet and allow traffic to/from vpc, And you have 1 RouteTable that routes the Internal traffic inside VPC.
-          you have  another RouteTable for a VPC with "Nat Gateway" that allows workernodes to connect to master node as they exist in different vpc
-          so they connect with each other through "Nat Gateway" not "Internet Gateway".
-          - All private subnets associates with this "Nat Gateway" Routetable and All public subnets associates with this "Internet Gateway"
-         
-         
+How EKS Cluster is created using Terraform ? 
+    1- we have controlplane"master node" that it managed by aws ....>> nothing you should to do
+    2- nce we have a master node we want to create "worker nodes" and connect these worker to master nodes to have a complete cluster  
+        and then deploy apps.
+    3- SO, you need to create a VPC Where the worker nodes will run That are "EC2 instances" you creat or using "node groups" that do 
+         some work for you like install all necessary things on ec2 instances.
+    4- You Always create a cluster in a specific region "ex: eu-west-3" that have multiple AZs which each of az has one worker node for 
+         High Availability And each AZ have (public subnet + private Subnet that have inside it worker nodes), you have 1 RouteTable for 
+         a VPC with Internet Gateway to connect to the Internet and allow traffic to/from vpc, And you have 1 RouteTable that routes the 
+        Internal traffic inside VPC. you have  another RouteTable for a VPC with "Nat Gateway" that allows workernodes to connect to 
+        master node as they exist in different vpc so they connect with each other through "Nat Gateway" not "Internet Gateway".
+      - All private subnets associates with this "Nat Gateway" Routetable and All public subnets associates with this "Internet Gateway"
+            
  Note:
    - Each Subnet has "default NatGateWay" that you should enable it so it can route traffic inside subnet <enable_nat_gateway = true>,
-     Also you should create a common NatGateway that will route all internal traffic for all all private subnets through Common NateGateway that you
-     created.
-   - when we create "LoadBalancer " in kubernetes that should be accessable from the internet but this (LB) is created inside private Subnet so it can't
-       access directly from the Internet ,So Kubernetes provision "cloud native loadBalancer" in public Subnet to access (LB) in private Subnet. 
+     Also you should create a common NatGateway that will route all internal traffic for all all private subnets through Common 
+     NateGateway that you created.
+   - when we create "LoadBalancer " in kubernetes that should be accessable from the internet but this (LB) is created inside private 
+     Subnet so it can't access directly from the Internet ,So Kubernetes provision "cloud native loadBalancer" in public Subnet to 
+      access (LB) in private Subnet. 
        
    - When you define EKS Cluster you should to define which type of Worker Node you want to connect to ths cluster :
        A) Self Managed - EC2 Instances    
        B) Semi Managed - NodeGroup
        C) Fargate 
        
-   - Once The EKS Cluster Is created it needs to authenticates with Mater Processes of kubernetes cluster so you need to configure the provider with the
-     authentication and there's a lot of ways to do that.
+   - Once The EKS Cluster Is created it needs to authenticates with Mater Processes of kubernetes cluster so you need to configure the 
+        provider with the authentication and there's a lot of ways to do that.
 
-
- Connect To EKS Cluster using kubectl:
+  Connect To EKS Cluster using kubectl:
     - install (AWS CLI , kubectl , aws-iam-authenticator)
-    - generate config file of your kubbernetes cluster ....>> #aws eks update-kubeconfig  --name  <name-of-cluster>  --region <eks-region-you-defined>   
+    - generate config file of your kubbernetes cluster ....>> #aws eks update-kubeconfig  --name  <name-of-cluster>  --region <eks-
+      region-you-defined>   
     - #kubectl get nodes
   
  
