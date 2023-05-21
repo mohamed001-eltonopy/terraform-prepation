@@ -23,6 +23,9 @@ Terraform Architecture? Has 2 Main components
    terraform plan: make sure that the desired state == current state. 
    terraform apply: execute the plan
    terraform destroy: destroy the resources/infrastructure
+   
+   terraform fmt : used to formatting the code for readibility.
+   terraform validate : it checks and validate whether the terraform config file is sync with its values or not.
  
  Terraform Installiation:
    brew install terraform 
@@ -176,7 +179,8 @@ ______________________________________
 **from vid 12-22**
 - you have 2 types of Terraform providers:
   1- HashiCorp Distributed  "It installed automatically using #terraform init"       
-  2- 3rd Party   "you must install plugin of this provider manually first and save it under specific path {./terraform/plugins} then run #terraform init"
+  2- 3rd Party   "you must install plugin of this provider manually first and save it under specific path {./terraform/plugins} then run 
+      #terraform init"
   
 **from vid 23-33**  
  - Count parameter:
@@ -190,9 +194,65 @@ ______________________________________
   - Locals Values:
     It used to avoid repeating the same values or expression multiple times for a resources within a module without repeating it.
  
-  - 
+  - Debugging in Terraform :
+     Terraform has detailed logs which can be enabled by sitting the TF_LOG environment variable to any value
+     you can set TF_LOG to one of the log levels TRACE,DEBUG,INFO,WARN,ERROR to change the verbosity of the logs.."TRACE" is the default
+       #export TF_LOG=TRACE       .....>> to persist logs in file use >> #export TF_LOG_PATH=/tmp/terraform.crash.log
+       #terraform plan     .....>> you will see a lot of logs displayed
+ 
+  - Dynamic Block:   (Very IMP)
+     there are repeatable nested blocks like ingress/egress blocks, that needs to be defined multiple times , 
+     So instead of define multiple repeated block we can create one dynamic block and for sure we have variables that 
+     contains all the values that need to be defined .
+ ```
+ resource "aws_security_group" "demo_sg" {
+  name        = "sample-sg"
 
+  ingress {
+    from_port   = 8200
+    to_port     = 8200
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
+  ingress {
+    from_port   = 8201
+    to_port     = 8201
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+ 
+```
+// After using Dynamic Block:
+ 
+ ```
+ variable "sg_ports" {
+  type        = list(number)
+  description = "list of ingress ports"
+  default     = [8200, 8201]
+}
+
+resource "aws_security_group" "dynamicsg" {
+  name        = "dynamic-sg"
+  description = "Ingress for Vault"
+
+  dynamic "ingress" {
+    for_each = var.sg_ports
+    iterator = port
+    content {
+      from_port   = port.value
+      to_port     = port.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+ }
+ ```
+ 
+  - Tainted Resources:
+     if you taint any resource that means that this resource will be destroyed automatically after creation.
+      ex; #terraform taint aws-instance.my-ec2
 
 
 
