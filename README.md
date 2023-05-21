@@ -179,79 +179,18 @@ ______________________________________
   2- 3rd Party   "you must install plugin of this provider manually first and save it under specific path {./terraform/plugins} then run #terraform init"
   
 **from vid 23-33**  
-- Count parameter:
-  the count parameter on resource can simplify configurations and let you scale resources by simply incrementing a number.
-  ```
-  resource "aws_instance" "test" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  tags = {
-    Name = "Dev-Instance"
-  }
-  count = 2     // the count value and the resource can be scaled accordingly , but the issue is that all will have the same name "Dev-Instance".
-  }
-  ```
-  
-  - To solve this issue by using (count.index) that allows us to fetch the index,names from a list of variables of each iteration in the loop.
-  ```
-  variable "ec2-names" {
-      type = list 
-      default = ["Dev-Instance","Pre-Instance","Sys-Instance","Prod-Instance"]
-  }
-  
-  resource "aws_instance" "test" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  tags = {
-    Name = var.ec2-names[count.index]  // this will create 4 ec2-Instance accroding the list onames with a name for each loop.
-  }
-  count = 4   
-  }
-  ```
-
+ - Count parameter:
+    the count parameter on resource can simply specify the count value [0,1,2,3,....] and the resource can be scaled accordingly.
+    count.index : it can helps you to specify the number of your current resource you want to create in count loop.
 
  - Conditional Expression: 
-   Uses the values of a bool expression to scale one of two values.
-   ```
-   condition ? true_val :  false_val
-   ex::   var.istest == true  ? 3 : 0 
-   ```
-  EXample:  
-  ```
-  variable "istest" {
-      true
-  }
-  
-  resource "aws_instance" "test" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  count = var.istest == true ? 1 : 0    // So if the var.istest is true then create 1 dev-instance if no don't create it 
-  }
-  
-  resource "aws_instance" "test" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  count = var.istest == false  ? 1 : 0       // So if the var.istest is flase then create 1 prod-instance if no don't create it
-  }
-  ```
-  
+   Uses the values of a bool expression to scale one of two values, if the condition is true plz use true one if not use false one.
+      condition ? true_val : false_val 
+ 
   - Locals Values:
-    Itis used to avoid repeating the same values or expression multiple times within a module without repeating it.
-    ```
-   locals {
-      common_tags = {
-         Owner = "DevOps Team"
-         service = "backend"
-      }
-   }
-   
-   resource "aws_instance" "app-dev" {
-   ami = "ami-082b5a644766e0e6f"
-   instance_type = "t2.micro"
-   tags = local.common_tags
-   }
-   ```
-
+    It used to avoid repeating the same values or expression multiple times for a resources within a module without repeating it.
+ 
+  - 
 
 
 
