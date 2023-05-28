@@ -252,9 +252,33 @@ resource "aws_security_group" "dynamicsg" {
  
   - Tainted Resources:
      if you taint any resource that means that this resource will be destroyed automatically after creation.
-      ex; #terraform taint aws-instance.my-ec2
+      ex; #terraform taint aws_instance.my-ec2
 
-
+- Terraform graph:
+      #terraform graph : command used to generate visual representation of execution plan , and the generated output is in .dot format
+              and you can visualize this file to image by installing (graphiz) #brew install graphviz
+      #terraform graph > graph.dot 
+      #cat graph.dot | dot  -Tsvg > graph.svg 
+ 
+ - Terraform plan:
+       the generated Terraform plan can be saved to a specific path.
+        #terraform plan -out=path
+       if you want to focus only changed resource you can specify it using 
+       #terraform plan  -refresh=false  -resource=ec2-instance.myec2
+ 
+ - Provisioners : .
+     are used to execute scripts on local or remote machines as a part of resource creation or destruction.
+ - Types of Provisioners: 
+     1- Creation-Time Provisioner: 
+          are only run during creation, not during update or any other lifecycle "after #terraform apply"
+          If Creation-Time Provisioner fails, the resource is marked as "tainted".
+     2- Destroy-Time Provisioner:
+          are run before the resource is destroyed. "before #terraform destroy"
+  - EX provisioners:
+     local-exec: ( Reminder: one of the most used approach of local-exec is to run ansible-playbooks on the created server )  
+                   allow us to invoke local executable after resource is created."executed on the server that run terraform config"
+     
+     remote-exec: allow us to invoke remote executable after resource is created.
 
 
 
